@@ -410,7 +410,7 @@ module.exports = {
                 throw Error(result.output);
             }
             else {
-                var packagePath = result.output.match(/Creating package (.*) in/);
+                var packagePath = result.output.match(/Create (.*) to/);
                 if (packagePath && packagePath[1]) {
                     console.log('Package created at ' + path.join(dest, packagePath[1]));
                 }
