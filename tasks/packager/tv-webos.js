@@ -405,7 +405,8 @@ module.exports = {
             console.log(stdout);
 
             // reference url : http://developer.lge.com/webOSTV/sdk/web-sdk/webos-tv-cli/using-webos-tv-cli/
-            var result = shelljs.exec('ares-package ' + path.resolve(www) + ' -o ' + path.resolve(dest));
+            // Adding -n flag to not minify code (as already minified).
+            var result = shelljs.exec('ares-package -n ' + path.resolve(www) + ' -o ' + path.resolve(dest));
             if(result.code) {
                 throw Error(result.output);
             }
