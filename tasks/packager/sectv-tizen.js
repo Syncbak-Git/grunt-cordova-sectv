@@ -225,34 +225,14 @@ module.exports = {
         var userConfPath = path.join('platforms', 'userconf.json');
         var userData = getValidTizenConfData(userConfPath);
 
-        if(userData) {
-            // exist userconf for tizen
-            confirmUseExistingData(userData, function (useExisting) {
-                if(useExisting) {
-                    // if user select useExisting: Y
-                    askUserData(cordovaConf, function (data) {
-                        userData.version = data.version;
-                        userData.manualConfData = getManualTizenConfData(cordovaConf.platform);
-                        buildProject();
-                    }, true, userData);
-                }
-                else {
-                    // if user select useExisting: N
-                    askUserData(cordovaConf, function (data) {
-                        userData = data;
-                        userData.manualConfData = getManualTizenConfData(cordovaConf.platform);
-                        buildProject();
-                    });
-                }
-            });
-        }
-        else {
-            // not exist userconf for tizen
-            askUserData(cordovaConf, function (data) {
-                userData = data;
-                userData.manualConfData = getManualTizenConfData(cordovaConf.platform);
-                buildProject();
-            });
+        // Removed version bump. Added simpler logic. MAC.
+
+        if (userData) {
+            userData.manualConfData = getManualTizenConfData(cordovaConf.platform)
+            buildProject()
+        } else {
+            console.error('Missing or invalid userconf.json for Tizen build.')
+            errorCallback && errorCallback()
         }
 
         function buildProject() {

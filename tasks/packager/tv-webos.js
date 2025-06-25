@@ -277,34 +277,14 @@ module.exports = {
         var userConfPath = path.join('platforms', 'userconf.json');
         var userData = getValidWebosConfData(userConfPath);
 
-        if(userData) {
-            // exist userconf for webos
-            confirmUseExistingData(userData, function (useExisting) {
-                if(useExisting) {
-                    // if user select useExisting: Y
-                    askUserData(cordovaConf, function (data) {
-                        userData.version = data.version;
-                        userData.manualConfData = getManualWebosConfData(cordovaConf.platform);
-                        buildProject();
-                    }, true, userData);
-                }
-                else {
-                    // if user select useExisting: N
-                    askUserData(cordovaConf, function (data) {
-                        userData = data;
-                        userData.manualConfData = getManualWebosConfData(cordovaConf.platform);
-                        buildProject();
-                    });
-                }
-            });
-        }
-        else {
-            // not exist userconf for webos
-            askUserData(cordovaConf, function (data) {
-                userData = data;
-                userData.manualConfData = getManualWebosConfData(cordovaConf.platform);
-                buildProject();
-            });
+        // Removed version bump. Added simpler logic. MAC.
+
+        if (userData) {
+            userData.manualConfData = getManualWebosConfData(cordovaConf.platform)
+            buildProject()
+        } else {
+            console.error('Missing or invalid userconf.json for WebOS build.')
+            errorCallback && errorCallback()
         }
 
         function buildProject() {
